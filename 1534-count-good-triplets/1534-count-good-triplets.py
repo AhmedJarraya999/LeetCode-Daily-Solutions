@@ -1,6 +1,5 @@
 class Solution(object):
     def countGoodTriplets(self, arr, a, b, c):
-        #maxinput=max(a,b,c)
         l=len(arr)
         count=0
         for i in range(l):
