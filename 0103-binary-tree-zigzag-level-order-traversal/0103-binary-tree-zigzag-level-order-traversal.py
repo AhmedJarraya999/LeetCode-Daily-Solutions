@@ -6,26 +6,22 @@
 #         self.right = right
 class Solution(object):
     def zigzagLevelOrder(self, root):
-        odd=False
+        odd=True 
         if not root:
             return []
         result=[]
         queue=deque([root])
         while queue:
             level=[]
-            for _ in range(len(queue)):  # process all nodes at this level  
-             node = queue.popleft()  
-             level.append(node.val)  
-             if odd==True:
+            for _ in range(len(queue)):
+                node = queue.popleft()
+                level.append(node.val)
                 if node.left:
-                   queue.append(node.left)
+                    queue.append(node.left)
                 if node.right:
-                   queue.append(node.right) 
-             else:
-                if node.right:
-                   queue.append(node.right) 
-                if node.left:
-                   queue.append(node.left)
+                    queue.append(node.right)    
+            if not odd:
+                level.reverse()
             result.append(level)
             odd= not odd
         return result
