@@ -1,38 +1,23 @@
 class Solution(object):
     def pushDominoes(self, dominoes):
-        n = len(dominoes)
-        forces = [0] * n
+        dom=list(dominoes)
+        q=deque()
+        for i,d in enumerate (dom):
+            if d != ".":
+                q.append((i,d))
+        while q:
+            i,d=q.popleft()
+            if d=="L" and i>0 and dom[i-1]==".":
+                q.append((i-1,"L"))
+                dom[i-1]="L"
+            elif d=="R": 
+             if i+1<len(dom) and dom[i+1]==".":
+                 if i+2<len(dom)  and dom[i+2]=="L":
+                    q.popleft()
+                 else:
+                    q.append((i+1,"R"))
+                    dom[i+1]="R"
+        return "".join(dom)
 
-        # Left to right: apply positive force from 'R'
-        force = 0
-        for i in range(n):
-            if dominoes[i] == 'R':
-                force = n
-            elif dominoes[i] == 'L':
-                force = 0
-            else:
-                force = max(force - 1, 0)
-            forces[i] += force
+                
 
-        # Right to left: apply negative force from 'L'
-        force = 0
-        for i in range(n - 1, -1, -1):
-            if dominoes[i] == 'L':
-                force = n
-            elif dominoes[i] == 'R':
-                force = 0
-            else:
-                force = max(force - 1, 0)
-            forces[i] -= force
-
-        # Build the result
-        result = []
-        for f in forces:
-            if f > 0:
-                result.append('R')
-            elif f < 0:
-                result.append('L')
-            else:
-                result.append('.')
-
-        return ''.join(result)
