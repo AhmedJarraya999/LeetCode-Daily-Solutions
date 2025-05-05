@@ -4,7 +4,7 @@ class Solution(object):
         left=dummy
         right=head
 
-        #difference initial w
+        #difference initial n
         while n>0 and right:
             right=right.next
             n-=1 
@@ -13,7 +13,7 @@ class Solution(object):
             right=right.next
         #delete
         left.next=left.next.next
-        
+
         #not include dummy node in the return 
         return dummy.next 
         
