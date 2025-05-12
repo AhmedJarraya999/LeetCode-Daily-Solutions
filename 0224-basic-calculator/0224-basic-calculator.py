@@ -23,7 +23,7 @@ class Solution(object):
                 stack.append(cur_op)
                 cur_op=1
                 res=0
-            elif char=="(":
+            elif char==")":
                 res+=cur_op*cur
 #we multiply by the last sign appeneded to the stack before performing parentheses
                 res*=stack.pop()
