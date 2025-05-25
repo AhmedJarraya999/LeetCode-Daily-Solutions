@@ -1,40 +1,25 @@
+from collections import Counter
+
 class Solution:
     def longestPalindrome(self, words: List[str]) -> int:
-        def helper(word1, word2):
-            both=word1+word2
-            def is_palindrom(s,left,right):
-                if left>=right:
-                    return True
-                if s[left]!=s[right]:
-                    return False
-                return is_palindrom(s,left+1,right-1)
-            return is_palindrom(both,0,len(both)-1)
-
-        n = len(words)
-        used = [False] * n
+        count = Counter(words)
         total_len = 0
-        center_used = False
+        has_center = False
 
-        for i in range(n):
-            if used[i]:
-                continue
-            for j in range(i + 1, n):
-                if not used[j] and helper(words[i], words[j]):
-                    total_len += 4
-                    used[i] = True
-                    used[j] = True
-                    break
+        for word in count:
+            rev = word[::-1]
+            if word != rev:
+                if word < rev:  # Avoid double counting
+                    pair_count = min(count[word], count[rev])
+                    total_len += pair_count * 4
+            else:
+                # word is like "gg", "aa"
+                pair_count = count[word] // 2
+                total_len += pair_count * 4
+                if count[word] % 2 == 1:
+                    has_center = True
 
-        
-        for i in range(n):
-            if not used[i] and words[i][0] == words[i][1]:
-                total_len += 2
-                break
+        if has_center:
+            total_len += 2
 
         return total_len
-
-
-
-        
-
-        
