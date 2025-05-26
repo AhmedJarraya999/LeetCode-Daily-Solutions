@@ -1,36 +1,33 @@
 class Solution:
     def largestPathValue(self,colors: str, edges: list[list[int]]) -> int:
-        n = len(colors)
-        graph = defaultdict(list)
-        indegree = [0] * n
+        adj=defaultdict(list)
+        for src,dst in edges:
+            adj[src].append(dst)
+        #return max frequent color for each node
+        def dfs(node):
+            if node in path:
+                return float('inf')
+            if node in visit:
+                return 0
+            visit.add(node)
+            path.add(node)
 
-        for u, v in edges:
-            graph[u].append(v)
-            indegree[v] += 1
-
-        dp = [[0] * 26 for _ in range(n)]
-        queue = deque()
-        
-        # Start with all nodes having zero indegree
+            colorIndex=ord(colors[node]) - ord('a')
+            count[node][colorIndex]=1
+            for nei in adj[node]:
+                if dfs(nei)==float("inf"):
+                    return float("inf")
+                for c in range(26):
+                    count[node][c]=max(
+                        count[node][c],
+                        (1 if c==colorIndex else 0)+ count[nei][c]
+                    )
+            path.remove(node)
+            return max(count[node])
+        visit,path=set(),set()
+        n=len(colors)
+        count=[[0]*26 for i in range(n)]#map counter for each color
+        n,res=len(colors),0
         for i in range(n):
-            if indegree[i] == 0:
-                queue.append(i)
-        
-        visited = 0
-        max_color_value = 0
-
-        while queue:
-            u = queue.popleft()
-            visited += 1
-            color_index = ord(colors[u]) - ord('a')
-            dp[u][color_index] += 1
-            max_color_value = max(max_color_value, dp[u][color_index])
-
-            for v in graph[u]:
-                for i in range(26):
-                    dp[v][i] = max(dp[v][i], dp[u][i])
-                indegree[v] -= 1
-                if indegree[v] == 0:
-                    queue.append(v)
-
-        return max_color_value if visited == n else -1
+            res=max(dfs(i),res)
+        return res if res!=float('inf') else -1
