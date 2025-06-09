@@ -1,8 +1,6 @@
-from typing import List
-
 class Solution:
     def minEatingSpeed(self, piles: List[int], h: int) -> int:
-        l, r = 1, max(piles)  # Correct search range: speed from 1 to max(piles)
+        l, r = 1, max(piles) 
         res = r
         
         def canEat(speed):
