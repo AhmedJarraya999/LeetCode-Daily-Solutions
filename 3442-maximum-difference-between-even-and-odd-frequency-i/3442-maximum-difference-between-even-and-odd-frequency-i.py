@@ -1,8 +1,6 @@
 class Solution:
     def maxDifference(self, s: str) -> int:
         freq=Counter(s)
-        odd_freq=[]
-        even_freq=[]
         max_odd=float('-inf')
         min_even=float('inf')
         for count in freq.values():
