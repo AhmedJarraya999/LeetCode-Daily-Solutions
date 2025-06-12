@@ -8,6 +8,7 @@ class Solution:
             #include
             if  backtrack(i+1,curSum+3**i):
                 return True
+            #skip
             return backtrack(i+1,curSum)
         return backtrack(0,0)
             
