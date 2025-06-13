@@ -18,7 +18,7 @@ class Solution:
         l,r=0,10**9
         res=10**9
         while l<=r:
-            m=l+r//2
+            m=(l+r)//2
             if isValid(m): #find valid paires akal men m
                 res=m
                 r=m-1
