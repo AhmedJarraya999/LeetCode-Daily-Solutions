@@ -3,7 +3,7 @@ class Solution:
         odd=[0]*len(graph) #Map node i -> odd=1,even=-1
         def bfs(i):
             if odd[i]:
-                return True
+                return True #visited yaani soit 1 ou -1
             q=deque([i])
             odd[i]=-1
             while q:
