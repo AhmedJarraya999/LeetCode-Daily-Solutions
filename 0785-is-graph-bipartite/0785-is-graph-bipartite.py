@@ -19,6 +19,6 @@ class Solution:
         for i in range(len(graph)):
             if  not bfs(i):
                 return False
-            return True
+        return True
 
         
