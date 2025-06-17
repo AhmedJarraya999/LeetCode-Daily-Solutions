@@ -8,7 +8,7 @@ class Solution:
         while minHeap:
             diff,r,c=heapq.heappop(minHeap)
             if (r,c) in visit:
-                continure
+                continue
             visit.add((r,c))
 
             #wselna lel target cell
