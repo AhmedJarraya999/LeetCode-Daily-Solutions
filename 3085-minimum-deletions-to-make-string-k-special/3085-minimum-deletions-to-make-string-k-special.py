@@ -1,6 +1,6 @@
 class Solution:
     def minimumDeletions(self, word: str, k: int) -> int:
-        freqs = list(collections.Counter(word).values())
+        freqs = list(Counter(word).values())
         ans = float('inf')
         
         for minFreq in freqs:
