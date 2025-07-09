@@ -1,10 +1,5 @@
 class Solution:
     def maxFreeTime(self, eventTime: int, k: int, startTime: List[int], endTime: List[int]) -> int:
-        from collections import deque
-from typing import List
-
-class Solution:
-    def maxFreeTime(self, eventTime: int, k: int, startTime: List[int], endTime: List[int]) -> int:
         # Step 1: Append a dummy meeting at the end to represent event end
         if eventTime > endTime[-1]:
             startTime.append(eventTime)
