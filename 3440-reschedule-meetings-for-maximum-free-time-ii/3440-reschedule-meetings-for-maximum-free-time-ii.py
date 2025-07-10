@@ -1,32 +1,29 @@
-from typing import List
-
 class Solution:
-    def maxFreeTime(self, eventTime: int, startTime: List[int], endTime: List[int]) -> int:
+    def maxFreeTime(
+        self, eventTime: int, startTime: list[int], endTime: list[int]
+    ) -> int:
         n = len(startTime)
-        available_space = [False] * n
-
-        s1 = 0
-        # Forward pass: check if a meeting can be shifted forward
+        q = [False] * n
+        t1 = 0
+        t2 = 0
         for i in range(n):
-            if endTime[i] <= startTime[i] and endTime[i] <= s1:
-                available_space[i] = True
-            s1 = max(s1, 0 if i == 0 else endTime[i - 1])
+            if endTime[i] - startTime[i] <= t1:
+                q[i] = True
+            t1 = max(t1, startTime[i] - (0 if i == 0 else endTime[i - 1]))
 
-        s2 = 0
-        # Backward pass: check if a meeting can be shifted backward
-        for i in range(n - 1, -1, -1):
-            if endTime[i] <= startTime[i] and startTime[i] >= s2:
-                available_space[i] = True
-            s2 = max(s2, eventTime if i == n - 1 else startTime[i + 1])
+            if endTime[n - i - 1] - startTime[n - i - 1] <= t2:
+                q[n - i - 1] = True
+            t2 = max(
+                t2,
+                (eventTime if i == 0 else startTime[n - i]) - endTime[n - i - 1],
+            )
 
         res = 0
         for i in range(n):
             left = 0 if i == 0 else endTime[i - 1]
             right = eventTime if i == n - 1 else startTime[i + 1]
-
-            if available_space[i]:
+            if q[i]:
                 res = max(res, right - left)
             else:
                 res = max(res, right - left - (endTime[i] - startTime[i]))
-
         return res
