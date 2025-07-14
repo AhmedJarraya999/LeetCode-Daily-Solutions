@@ -4,8 +4,8 @@ class Solution:
         s=sorted(s)
         j=0
         res=0
-        for i,child in enumerate(g):
-            while j<len(s) and s[j]<g[i]:
+        for child in g:
+            while j<len(s) and s[j]<child:
                 j+=1
             if j<len(s):
                 j+=1
