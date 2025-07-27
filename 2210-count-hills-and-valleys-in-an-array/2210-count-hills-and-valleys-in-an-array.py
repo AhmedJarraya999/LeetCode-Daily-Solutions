@@ -8,12 +8,11 @@ class Solution:
         for i in range(1, n - 1):
             if nums[i] == nums[i - 1]:
                 continue
-            # Find the closest non-equal element on the left
+
             leftpointer = i - 1
             while leftpointer >= 0 and nums[leftpointer] == nums[i]:
                 leftpointer -= 1
 
-            # Find the closest non-equal element on the right
             rightpointer = i + 1
             while rightpointer < n and nums[rightpointer] == nums[i]:
                 rightpointer += 1
@@ -21,8 +20,9 @@ class Solution:
             # Check boundaries
             if leftpointer >= 0 and rightpointer < n:
                 if nums[i] > nums[leftpointer] and nums[i] > nums[rightpointer]:
-                    cnt += 1  # Hill
+                    cnt += 1  
+
                 elif nums[i] < nums[leftpointer] and nums[i] < nums[rightpointer]:
-                    cnt += 1  # Valley
+                    cnt += 1  
 
         return cnt
