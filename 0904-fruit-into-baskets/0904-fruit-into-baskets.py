@@ -1,21 +1,20 @@
-from typing import List
-from collections import defaultdict
-
 class Solution:
     def totalFruit(self, fruits: List[int]) -> int:
-        basket = defaultdict(int)
-        left = 0
-        max_fruits = 0
+        count=defaultdict(int)
+        tot,l=0,0
+        res=0
+        for r in range(len(fruits)):
+            count[fruits[r]]+=1
+            tot+=1
+            while len(count)>2:
+                count[fruits[l]]-=1
+                tot-=1
+                if count[fruits[l]]==0:
+                    del count[fruits[l]]
+                l+=1
+        res=max(res,tot)
+        return res
 
-        for right in range(len(fruits)):
-            basket[fruits[right]] += 1
 
-            while len(basket) > 2:
-                basket[fruits[left]] -= 1
-                if basket[fruits[left]] == 0:
-                    del basket[fruits[left]]
-                left += 1
 
-            max_fruits = max(max_fruits, right - left + 1)
-
-        return max_fruits
+        
