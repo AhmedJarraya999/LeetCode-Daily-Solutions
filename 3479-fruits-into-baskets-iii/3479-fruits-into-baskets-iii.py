@@ -1,15 +1,36 @@
+from typing import List
+
 class Solution:
     def numOfUnplacedFruits(self, fruits: List[int], baskets: List[int]) -> int:
-        used_b=set()
-        res=0
-        for i in range(len(fruits)):
-            used_f=0
-            for j in range(len(baskets)):
-                if j in used_b or fruits[i]>baskets[j]:
-                    continue
-                used_b.add(j)
-                used_f=1
-                break
-            if  not used_f:res+=1
-        return res
+        self.n = len(baskets)
+        self.seg = [0] * (4 * self.n)
+        self._build(baskets, 0, self.n - 1, 1)
         
+        unplaced = 0
+        for f in fruits:
+            if self._find_and_use(f, 0, self.n - 1, 1) == -1:
+                unplaced += 1
+        return unplaced
+
+    def _build(self, baskets: List[int], low: int, high: int, idx: int):
+        if low == high:
+            self.seg[idx] = baskets[low]
+        else:
+            mid = (low + high) // 2
+            self._build(baskets, low, mid, idx * 2)
+            self._build(baskets, mid + 1, high, idx * 2 + 1)
+            self.seg[idx] = max(self.seg[idx * 2], self.seg[idx * 2 + 1])
+
+    def _find_and_use(self, fruit: int, low: int, high: int, idx: int) -> int:
+        if self.seg[idx] < fruit:
+            return -1
+        if low == high:
+            self.seg[idx] = 0  # Use basket by setting to 0
+            return 1
+        mid = (low + high) // 2
+        if self.seg[idx * 2] >= fruit:
+            res = self._find_and_use(fruit, low, mid, idx * 2)
+        else:
+            res = self._find_and_use(fruit, mid + 1, high, idx * 2 + 1)
+        self.seg[idx] = max(self.seg[idx * 2], self.seg[idx * 2 + 1])
+        return res
