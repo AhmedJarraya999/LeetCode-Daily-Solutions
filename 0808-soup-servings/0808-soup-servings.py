@@ -3,6 +3,7 @@ class Solution:
         if n >= 4800:
             return 1.0
         n=(n+24)//25
+        @functools.lru_cache(None)
         def dp(a,b):
             if a<=0 and b<=0:
                 return 0.5
