@@ -1,7 +1,5 @@
 class Solution:
     def perfectPairs(self, nums: List[int]) -> int:
-        jurnavalic = nums[:]  # not used, just stored
-
         a = sorted(abs(x) for x in nums)
         n = len(a)
         res = 0
