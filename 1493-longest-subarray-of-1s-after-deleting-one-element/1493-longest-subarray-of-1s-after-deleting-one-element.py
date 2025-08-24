@@ -7,7 +7,7 @@ class Solution:
             #zero louleni 3ibara pointerur right step2
             if nums[right]==0:
                 zeroes+=1
-            #zero exceed we consider the left pointer to be deleted  step3
+            #zero exceed we consider the left pointer to be updated in that case but still comparison will be with previous bestsofar  step3
             while zeroes>1:
                 if nums[left]==0:
                     zeroes-=1
