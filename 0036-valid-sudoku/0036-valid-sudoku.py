@@ -1,36 +1,40 @@
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
-        for i in range(9):
-            s = set()
-            for j in range(9):
-                item = board[i][j]
-                if item in s:
+        n=len(board)
+        rowset=set()
+        colset=set()
+        boxes=[set() for _ in range(9)]
+        for row in range(n):
+            for col in range(n):
+                if board[row][col]=='.':
+                    continue
+                box_index=(col//3)+(row//3)*3
+                if board[row][col] in boxes[box_index]:
                     return False
-                elif item != '.':
-                    s.add(item)
-        
-        # Validate Cols
-        for i in range(9):
-            s = set()
-            for j in range(9):
-                item = board[j][i]
-                if item in s:
+                else:
+                    boxes[box_index].add(board[row][col])
+
+
+
+        for row in range(n):
+            rowset=set()
+            for col in range(n):
+                if board[row][col]=='.':
+                    continue
+                if board[row][col] in rowset:
                     return False
-                elif item != '.':
-                    s.add(item)
-            
-        # Validate Boxes
-        starts = [(0, 0), (0, 3), (0, 6),
-                  (3, 0), (3, 3), (3, 6),
-                  (6, 0), (6, 3), (6, 6)]
-        
-        for i, j in starts:
-            s = set()
-            for row in range(i, i+3):
-                for col in range(j, j+3):
-                    item = board[row][col]
-                    if item in s:
-                        return False
-                    elif item != '.':
-                        s.add(item)
+                rowset.add(board[row][col])
+        for col in range(n):
+            for row in range(n):
+                if board[row][col]=='.':
+                    continue
+                if board[row][col] in colset:
+                    return False    
+                colset.add(board[row][col])
+                colset.clear()
         return True
+
+
+
+
+        
