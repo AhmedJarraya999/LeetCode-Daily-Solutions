@@ -1,7 +1,18 @@
 class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
         res=[]
-        nums=list(range(1,n+1))
-        for comb in combinations(nums,k):
-            res.append(list(comb))
+        def backtrack(start,path):
+            if len(path)==k:
+                res.append(path[:])
+                return 
+            for i in range(start,n+1):    
+                path.append(i)
+                backtrack(i+1,path)
+                path.pop()
+        backtrack(1,[])
         return res
+        # res=[]
+        # nums=list(range(1,n+1))
+        # for comb in combinations(nums,k):
+        #     res.append(list(comb))
+        # return res
