@@ -8,7 +8,7 @@ class Solution:
             fuel+=gas[i]-cost[i]
             #wakteli f position fuel wala akal najmouch neebdew mel index heeka
             if fuel<0:
-                start+=1
+                start=i+1
                 fuel=0
         return start
 
