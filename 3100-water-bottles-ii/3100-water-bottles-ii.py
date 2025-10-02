@@ -1,5 +1,22 @@
 #wrong trial
 
+
+
+
+
+#Recursive Version
+# class Solution:
+#     def maxBottlesDrunk(self, numBottles: int, numExchange: int) -> int:
+#         def helper(numBottles, empty, numExchange):
+#             if numBottles == 0 and empty < numExchange:
+#                 return 0
+#             res = numBottles
+#             empty += numBottles
+#             if empty >= numExchange:
+#                 return res + helper(1, empty - numExchange, numExchange + 1)
+#             return res
+#         return helper(numBottles, 0, numExchange)
+
 # class Solution:     
 #     def maxBottlesDrunk(self, numBottles: int, numExchange: int) -> int:    
 #         empty=0 
