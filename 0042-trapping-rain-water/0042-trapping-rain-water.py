@@ -21,13 +21,4 @@ class Solution:
 
 
 
-        i=0
-        dp={}
-        j=len(height)
-        width=j-i
-        cumWater=min(height[i],height[j])
-        def dp(i,j,cumWater):
-            if i-j==1:
-                return
-            cumWater=cumWater+dp(i,j,cumWater)
-        
+     
