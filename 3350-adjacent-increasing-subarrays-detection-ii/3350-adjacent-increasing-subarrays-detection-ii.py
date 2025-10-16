@@ -10,7 +10,7 @@ class Solution:
             if nums[i+1]>nums[i]:
                 right[i]=right[i+1]+1
         ans=0
-        for i in range(n-2):
+        for i in range(n-1):
             ans=max(ans,min(left[i],right[i+1]))
         return ans
 
