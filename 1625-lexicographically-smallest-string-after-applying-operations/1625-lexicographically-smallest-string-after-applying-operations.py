@@ -2,33 +2,28 @@ from collections import deque
 
 class Solution:
     def findLexSmallestString(self, s: str, a: int, b: int) -> str:
-        visited = set()
-        queue = deque([s])
-        smallest = s
+        n=len(s)
+        q=deque([s])
+        visited=set()
+        visited.add(s)
+        res=s
+        while q:
+            curr=q.popleft()
+            res=min(res,curr)
+            o1=list(curr)
+            #adding a to odd indicies
+            for i in range(1,n,2):
+                o1[i]=str((int(o1[i])+a)%10)
+            o1="".join(o1)    
+            if not o1 in visited:
+                visited.add(o1)
+                q.append(o1)
+            #second rotation by transoframation
+            o2=list(curr)
+            o2=o2[-b:]+o2[:-b]
+            o2="".join(o2)
+            if o2 not in visited:
+                visited.add(o2)
+                q.append(o2)
+        return res
 
-        while queue:
-            cur = queue.popleft()
-            if cur in visited:
-                continue
-            visited.add(cur)
-
-            # Update smallest string if needed
-            if cur < smallest:
-                smallest = cur
-
-            # Operation 1: add 'a' to all odd indices
-            chars = list(cur)
-            for i in range(1, len(chars), 2):
-                chars[i] = str((int(chars[i]) + a) % 10)
-            added = ''.join(chars)
-
-            # Operation 2: rotate right by b
-            rotated = cur[-b:] + cur[:-b]
-
-            # Enqueue next states
-            if added not in visited:
-                queue.append(added)
-            if rotated not in visited:
-                queue.append(rotated)
-
-        return smallest
