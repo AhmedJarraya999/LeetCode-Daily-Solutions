@@ -20,20 +20,3 @@ class Solution:
 
 
 
-
-
-
-        startingpoint=0
-        res=0
-        addition=1
-        checker=0
-        for d in range(n):
-            while checker<7:
-                res+=startingpoint+addition
-                checker+=1
-            checker=0
-            startingpoint+=1
-            res+=startingpoint+addition
-        return res
-
-        
