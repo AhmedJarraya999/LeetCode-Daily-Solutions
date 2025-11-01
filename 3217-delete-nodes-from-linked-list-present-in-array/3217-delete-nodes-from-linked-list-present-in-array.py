@@ -8,9 +8,8 @@ class Solution:
         myset=set(nums)
         dummy=ListNode(0,head)
         prev=dummy
-        curr=head
         while prev.next: 
-            if curr.val in myset:
+            if prev.next.val in myset:
                 prev.next= prev.next.next
             else:
                 prev=prev.next
