@@ -15,18 +15,4 @@ class Solution:
                     nc+=dc
         return tot_cells-len(guards)-len(walls)-len(guarded)
 
-        # guards=set(guards)
-        # walls=set(walls)
-        # for r in range(m):
-        #     for j in rang(n):
-        #         if [r,j] in walls:
-        #             continue
-        #         if [r,j] in guards:
-        #             continue
-        #         else:
-        #             directions=[(-1,0),(1,0),(0,1),(0,-1)]
-        #             for dr,dc in directions:
-        #                 nr=r+dr
-        #                 nc=c+dc
-                    
-        
+   
