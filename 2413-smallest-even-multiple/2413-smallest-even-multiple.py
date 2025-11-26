@@ -6,5 +6,5 @@ class Solution:
             else:
                 return 2*n
         elif n==2 or n==1:
-            return n
+            return 2
         
