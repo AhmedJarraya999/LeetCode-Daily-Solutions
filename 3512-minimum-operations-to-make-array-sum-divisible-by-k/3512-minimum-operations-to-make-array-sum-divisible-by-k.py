@@ -1,8 +1,3 @@
-class Solution(object):
-    def minOperations(self, nums, k):
-        total=sum(nums)
-        return total%k
-                
-        
-        
-        
+class Solution:
+    def minOperations(self, nums: List[int], k: int) -> int:
+        return sum(nums) % k
