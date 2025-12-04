@@ -1,50 +1,41 @@
-class Solution:
+# Time:  O(n^2 * logr), r = max(max(abs(x), abs(y)) for x, y in points)
+# Space: O(n^2)
+
+import collections
+
+
+# freq table, combinatorics
+class Solution(object):
     def countTrapezoids(self, points):
-        from math import gcd
-        n = len(points)
-        
-        # Step 1: map slope → list of segments (each segment is (i,j))
-        slopes = {}
-        
-        for i in range(n):
+        """
+        :type points: List[List[int]]
+        :rtype: int
+        """
+        def gcd(a, b):
+            while b:
+                a, b = b, a%b
+            return abs(a)
+
+        lookup_slope = collections.defaultdict(int)
+        lookup_line = collections.defaultdict(int)
+        lookup_slope_length = collections.defaultdict(int)
+        lookup_line_length = collections.defaultdict(int)
+        result = same = 0
+        for i in range(len(points)):
             x1, y1 = points[i]
-            for j in range(i + 1, n):
+            for j in range(i):
                 x2, y2 = points[j]
-                dx = x2 - x1
-                dy = y2 - y1
-                
+                dx, dy = x2-x1, y2-y1
                 g = gcd(dx, dy)
-                dx //= g
-                dy //= g
-                
-                # normalize direction
-                if dx < 0 or (dx == 0 and dy < 0):
-                    dx = -dx
-                    dy = -dy
-                
-                slopes.setdefault((dx, dy), []).append((i, j))
-        
-        ans = 0
-        
-        # Step 2: for each slope group, count valid segment pairs
-        for segs in slopes.values():
-            m = len(segs)
-            if m < 2:
-                continue
-            
-            # total segment pairs
-            total_pairs = m * (m - 1) // 2
-            
-            # subtract pairs sharing a common endpoint
-            freq = {}
-            for a, b in segs:
-                freq[a] = freq.get(a, 0) + 1
-                freq[b] = freq.get(b, 0) + 1
-            
-            bad = 0
-            for c in freq.values():
-                bad += c * (c - 1) // 2
-            
-            ans += total_pairs - bad
-        
-        return ans
+                a, b = dx//g, dy//g
+                if a < 0 or (a == 0 and b < 0):
+                    a, b = -a, -b
+                c = b*x1-a*y1
+                result += lookup_slope[a, b]-lookup_line[a, b, c]
+                lookup_slope[a, b] += 1
+                lookup_line[a, b, c] += 1
+                l = dx**2+dy**2
+                same += lookup_slope_length[a, b, l]-lookup_line_length[a, b, c, l]
+                lookup_slope_length[a, b, l] += 1
+                lookup_line_length[a, b, c, l] += 1
+        return result-same//2
