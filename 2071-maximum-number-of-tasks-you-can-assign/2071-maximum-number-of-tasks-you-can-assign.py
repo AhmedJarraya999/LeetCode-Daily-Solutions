@@ -3,11 +3,11 @@ from bisect import bisect_left
 class Solution:
     def maxTaskAssign(self, tasks: list[int], workers: list[int], pills: int, strength: int) -> int:
         tasks.sort()
-        workrs = sorted(workers)
+        workers = sorted(workers)
 
         def can(k):
             needed = tasks[:k]
-            available = workrs[-k:]
+            available = workers[-k:]
             pool = available[:]
             p = pills
 
