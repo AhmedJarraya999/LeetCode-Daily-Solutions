@@ -5,11 +5,12 @@
  * @return {number}
  */
 var reduce = function(nums, fn, init) {
-    let accsum=init
-    for (const i in nums){
-        accsum=fn(accsum,nums[i])
-    }
-    return accsum
+    return nums.reduce(fn,init)
+    // let accsum=init
+    // for (const i in nums){
+    //     accsum=fn(accsum,nums[i])
+    // }
+    // return accsum
     
     
 };
