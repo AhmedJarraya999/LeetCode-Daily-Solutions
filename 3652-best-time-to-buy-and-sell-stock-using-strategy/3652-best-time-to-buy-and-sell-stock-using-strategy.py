@@ -2,20 +2,51 @@ class Solution:
     def maxProfit(self, prices: List[int], strategy: List[int], k: int) -> int:
         n = len(prices)
 
-        # Initialize prefix sums
-        pp = [prices[0]] * n
-        ps = [strategy[0] * prices[0]] * n
+        # 1. Original profit
+        base_profit = sum(p * s for p, s in zip(prices, strategy))
 
-        for i in range(1, n):
-            pp[i] = pp[i - 1] + prices[i]
-            ps[i] = ps[i - 1] + (strategy[i] * prices[i])
+        # 2. Prefix sums for prices and strategy * prices
+        prefix_price = [0] * (n + 1)
+        prefix_old = [0] * (n + 1)
 
-        res = ps[-1]
+        for i in range(n):
+            prefix_price[i + 1] = prefix_price[i] + prices[i]
+            prefix_old[i + 1] = prefix_old[i] + prices[i] * strategy[i]
 
-        for i in range(k - 1, n):
-            curr = ps[i] - (ps[i - k] if i - k >= 0 else 0)
-            change = pp[i] - (pp[i - k // 2] if i - k // 2 >= 0 else 0)
-            res = max(res, ps[-1] - curr + change)
+        max_profit = base_profit
+        half = k // 2
 
-        return res
+        # 3. Slide window
+        for start in range(n - k + 1):
+            mid = start + half
+            end = start + k
+            # Old contribution of the window
+            old_window = prefix_old[end] - prefix_old[start]
+
+        # New contribution:
+        # first half -> 0
+        # second half -> sell (1)
+            new_window = prefix_price[end] - prefix_price[mid]
+
+        # New total profit
+            new_profit = base_profit - old_window + new_window
+            max_profit = max(max_profit, new_profit)
+        return max_profit
+
+        #####BF#########
+        # n=len(prices)
+        # def prof(s):
+        #     return sum(p*a for p,a in zip(prices,s))
+        # res=sum(p*a for p,a in zip(prices,strategy))
+        # for start in range(n-k+1):
+        #     temp_strategy=strategy.copy()
+        #     for i in range(k//2):
+        #         temp_strategy[start+i]=0
+        #     for i in range(k//2,k):
+        #         temp_strategy[start+i]=1
+        #     current_profit = prof(temp_strategy)
+        #     res=max(current_profit,res)
+        # return res
+        
+
         
