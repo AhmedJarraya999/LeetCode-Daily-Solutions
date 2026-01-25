@@ -1,62 +1,78 @@
-from heapq import heappush, heappop
+import heapq
+
+class Node:
+    def __init__(self, val, i):
+        self.val = val
+        self.i = i
+        self.prev = None
+        self.next = None
+        self.alive = True
 
 class Solution:
     def minimumPairRemoval(self, nums: list[int]) -> int:
-        n = len(nums)
-        val = [num for num in nums]
+        # Create doubly linked list
+        head = Node(nums[0], 0)
+        cur = head
+        nodes = [head]
+        for i in range(1, len(nums)):
+            node = Node(nums[i], i)
+            node.prev = cur
+            cur.next = node
+            cur = node
+            nodes.append(node)
 
-        left = [i-1 for i in range(n)]
-        right = [i+1 for i in range(n)]
+        heap = []
+        inversions = 0
+        
+        # Count initial inversions and fill the heap
+        for i in range(1, len(nums)):
+            if nums[i-1] > nums[i]:
+                inversions += 1
+            heapq.heappush(heap, (nums[i] + nums[i-1], i-1, nodes[i-1]))
 
-        # Min-heap of [sum, index]
-        pq = []
-        unsorted = 0
+        ops = 0
 
-        for i in range(n-1):
-            heappush(pq, (val[i]+val[i+1], i))
-            if val[i] > val[i+1]:
-                unsorted += 1
+        # Process until no inversions remain
+        while inversions:
+            while heap:
+                tot, i, left = heapq.heappop(heap)
+                right = left.next
 
-        ans = 0
+                # Skip invalid nodes
+                if not left.alive or not right or not right.alive:
+                    continue
+                if left.val + right.val != tot:
+                    continue
+                break
+            else:
+                # Heap is empty but inversions > 0 -> prevent infinite loop
+                break
 
-        while unsorted > 0 and pq:
-            curr_sum, i = heappop(pq)
-            j = right[i]
+            # Remove inversions caused by this pair before update
+            if left.prev and left.val < left.prev.val:
+                inversions -= 1
+            if left.next and left.val > left.next.val:
+                inversions -= 1
 
-            # lazy removal
-            if j >= n or left[j] != i or val[i] + val[j] != curr_sum:
-                continue
+            # Merge left and right
+            left.val = tot
+            right.alive = False
+            left.next = right.next
+            if right.next:
+                right.next.prev = left
 
-            # valid pair
-            if val[i] > val[j]:
-                unsorted -= 1
+            # Count new inversions after merge
+            if left.prev and left.val < left.prev.val:
+                inversions += 1
+            if left.next and left.val > left.next.val:
+                inversions += 1
 
-            prev = left[i]
-            next_ = right[j]
+            # Add new possible pairs to heap
+            if left.prev:
+                heapq.heappush(heap, (left.prev.val + left.val, left.prev.i, left.prev))
+            if left.next:
+                heapq.heappush(heap, (left.val + left.next.val, left.i, left))
 
-            if prev != -1 and val[prev] > val[i]:
-                unsorted -= 1
+            ops += 1
 
-            if next_ != n and val[j] > val[next_]:
-                unsorted -= 1
-
-            # merging
-            val[i] = curr_sum
-            right[i] = next_
-            if next_ != n:
-                left[next_] = i
-
-            ans += 1
-
-            # update heap with new adjacent pairs
-            if prev != -1:
-                if val[prev] > val[i]:
-                    unsorted += 1
-                heappush(pq, (val[prev] + val[i], prev))
-
-            if next_ != n:
-                if val[i] > val[next_]:
-                    unsorted += 1
-                heappush(pq, (val[i] + val[next_], i))
-
-        return ans
+        return ops
