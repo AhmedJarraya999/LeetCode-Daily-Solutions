@@ -5,6 +5,7 @@ class Node:
         self.prev=None
         self.next=None
         self.alive=True
+
 class Solution:
     def minimumPairRemoval(self, nums: List[int]) -> int:
         head=Node(nums[0],0)
@@ -16,8 +17,8 @@ class Solution:
             node.prev=cur
             cur=node
             ll.append(cur)
-        inversions=0
         heap=[]
+        inversions=0
         for i in range(1,len(nums)):
             if nums[i]<nums[i-1]:
                 inversions+=1
@@ -29,36 +30,101 @@ class Solution:
                 right=left.next
                 if not left.alive or not right or not right.alive:
                     continue
-                if left.val+right.val!=tot:
+                if tot!=left.val+right.val:
                     continue
                 break
-            ##check if inversion zeyda
+            # Before merging, decrease inversions that will be removed
             if left.prev and left.prev.val>left.val:
                 inversions-=1
             if left.next and left.next.val<left.val:
                 inversions-=1
-            if right.next and right.next.val<right.val:
+            if right.next and right.val>right.next.val:
                 inversions-=1
- 
-            #update left node
-            left.val=tot
-            left.next=(right.next if right.next else None)
+
             right.alive=False
+            left.val=tot
+            left.next=right.next
             if right.next:
                 right.next.prev=left
-            
+            #check if inversions are added
             if left.next and left.val>left.next.val:
                 inversions+=1
             if left.prev and left.val<left.prev.val:
                 inversions+=1
-
-            ##push new 
+            #push new to heap
             if left.prev:
                 heapq.heappush(heap,(left.prev.val+left.val,left.prev.i,left.prev))
             if left.next:
-                heapq.heappush(heap,(left.val+left.next.val,left.i,left))
+                heapq.heappush(heap,(left.next.val+left.val,left.i,left))
             ops+=1
         return ops
+
+
+
+
+
+
+# class Node:
+#     def __init__(self,val,i):
+#         self.val=val
+#         self.i=i
+#         self.prev=None
+#         self.next=None
+#         self.alive=True
+# class Solution:
+#     def minimumPairRemoval(self, nums: List[int]) -> int:
+#         head=Node(nums[0],0)
+#         cur=head
+#         ll=[head]
+#         for i in range(1,len(nums)):
+#             node=Node(nums[i],i)
+#             cur.next=node
+#             node.prev=cur
+#             cur=node
+#             ll.append(cur)
+#         inversions=0
+#         heap=[]
+#         for i in range(1,len(nums)):
+#             if nums[i]<nums[i-1]:
+#                 inversions+=1
+#             heapq.heappush(heap,(nums[i]+nums[i-1],i-1,ll[i].prev))
+#         ops=0
+#         while inversions:
+#             while True:
+#                 tot,i,left=heapq.heappop(heap)
+#                 right=left.next
+#                 if not left.alive or not right or not right.alive:
+#                     continue
+#                 if left.val+right.val!=tot:
+#                     continue
+#                 break
+#             ##check if inversion zeyda
+#             if left.prev and left.prev.val>left.val:
+#                 inversions-=1
+#             if left.next and left.next.val<left.val:
+#                 inversions-=1
+#             if right.next and right.next.val<right.val:
+#                 inversions-=1
+ 
+#             #update left node
+#             left.val=tot
+#             left.next=(right.next if right.next else None)
+#             right.alive=False
+#             if right.next:
+#                 right.next.prev=left
+            
+#             if left.next and left.val>left.next.val:
+#                 inversions+=1
+#             if left.prev and left.val<left.prev.val:
+#                 inversions+=1
+
+#             ##push new 
+#             if left.prev:
+#                 heapq.heappush(heap,(left.prev.val+left.val,left.prev.i,left.prev))
+#             if left.next:
+#                 heapq.heappush(heap,(left.val+left.next.val,left.i,left))
+#             ops+=1
+#         return ops
 
         
 
