@@ -5,7 +5,6 @@ class Node:
         self.prev=None
         self.next=None
         self.alive=True
-    
 class Solution:
     def minimumPairRemoval(self, nums: List[int]) -> int:
         head=Node(nums[0],0)
@@ -13,45 +12,45 @@ class Solution:
         ll=[head]
         for i in range(1,len(nums)):
             node=Node(nums[i],i)
-            cur.next=node
             node.prev=cur
+            cur.next=node
             cur=node
             ll.append(cur)
         heap=[]
         inversions=0
         for i in range(1,len(nums)):
-            heapq.heappush(heap,(nums[i]+nums[i-1],i-1,ll[i].prev))
             if nums[i]<nums[i-1]:
                 inversions+=1
+            heapq.heappush(heap,(nums[i]+nums[i-1],i-1,ll[i].prev))
         ops=0
-        while inversions!=0:
+        while inversions:
             while True:
                 tot,i,left=heapq.heappop(heap)
                 right=left.next
-                if not left.alive or not right or not right.alive:
+                if not left or not right or not right.alive:
                     continue
-                if tot!=left.val+left.next.val:
+                if left.val+right.val!=tot:
                     continue
                 break
-            ##check  decrase inversions
+            ##eliminate inversions
             if left.prev and left.prev.val>left.val:
                 inversions-=1
             if left.next and left.next.val<left.val:
                 inversions-=1
-            if right.next and right.next.val<left.val:
+            if right.next and right.next.val<right.val:
                 inversions-=1
-            #mise a jour link ll
+            ##update ll with new values
             left.val=tot
-            right.alive=False
             left.next=(right.next if right.next else None)
+            right.alive=False
             if right.next:
                 right.next.prev=left
-            ##famechi 9albeet jdod 
-            if left.next and left.next.val<left.val:
-                inversions+=1
+            #check if new inversions are added
             if left.prev and left.prev.val>left.val:
                 inversions+=1
-            #push new value to the heap
+            if left.next and left.next.val<left.val:
+                inversions+=1
+            ##push new formed adjacent pairs
             if left.prev:
                 heapq.heappush(heap,(left.prev.val+left.val,left.prev.i,left.prev))
             if left.next:
@@ -59,10 +58,10 @@ class Solution:
             ops+=1
         return ops
 
-            
+      
 
 
-        
+
 
 
 
