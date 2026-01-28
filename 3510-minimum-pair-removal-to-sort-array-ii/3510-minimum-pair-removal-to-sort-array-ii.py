@@ -5,8 +5,7 @@ class Node:
         self.prev=None
         self.next=None
         self.alive=True
-
-
+    
 class Solution:
     def minimumPairRemoval(self, nums: List[int]) -> int:
         head=Node(nums[0],0)
@@ -18,16 +17,14 @@ class Solution:
             node.prev=cur
             cur=node
             ll.append(cur)
-
         heap=[]
         inversions=0
-        ops=0
         for i in range(1,len(nums)):
-            if nums[i-1]>nums[i]:
-                inversions+=1
             heapq.heappush(heap,(nums[i]+nums[i-1],i-1,ll[i].prev))
-        while inversions:
-            ##lazy deletion
+            if nums[i]<nums[i-1]:
+                inversions+=1
+        ops=0
+        while inversions!=0:
             while True:
                 tot,i,left=heapq.heappop(heap)
                 right=left.next
@@ -36,32 +33,36 @@ class Solution:
                 if tot!=left.val+left.next.val:
                     continue
                 break
-            ###decreasiong inversions
+            ##check  decrase inversions
             if left.prev and left.prev.val>left.val:
                 inversions-=1
-            if  left.next and left.next.val<left.val:
+            if left.next and left.next.val<left.val:
                 inversions-=1
-            if right.next and right.val>right.next.val:
+            if right.next and right.next.val<left.val:
                 inversions-=1
-            ##update links
+            #mise a jour link ll
             left.val=tot
-            left.next=right.next
+            right.alive=False
+            left.next=(right.next if right.next else None)
             if right.next:
                 right.next.prev=left
-            right.alive=False
-            ##check if new inversions are added
-            if left.prev and left.val<left.prev.val:
-                inversions+=1
+            ##famechi 9albeet jdod 
             if left.next and left.next.val<left.val:
                 inversions+=1
-            ##merge
+            if left.prev and left.prev.val>left.val:
+                inversions+=1
+            #push new value to the heap
             if left.prev:
-                heapq.heappush(heap,(left.val+left.prev.val,left.prev.i,left.prev))
+                heapq.heappush(heap,(left.prev.val+left.val,left.prev.i,left.prev))
             if left.next:
-                heapq.heappush(heap,(left.val+left.next.val,left.i,left))
+                heapq.heappush(heap,(left.next.val+left.val,left.i,left))
             ops+=1
-        return ops 
+        return ops
+
             
+
+
+        
 
 
 
