@@ -27,7 +27,7 @@ class Solution:
             while True:
                 tot,i,left=heapq.heappop(heap)
                 right=left.next
-                if not left or not right or not right.alive:
+                if not left.alive or not right or not right.alive:
                     continue
                 if left.val+right.val!=tot:
                     continue
