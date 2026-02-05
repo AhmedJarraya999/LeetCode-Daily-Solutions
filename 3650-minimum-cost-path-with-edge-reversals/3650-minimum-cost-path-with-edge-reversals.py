@@ -1,25 +1,51 @@
 class Solution:
     def minCost(self, n: int, edges: List[List[int]]) -> int:
-        dist=[0]+[inf]*(n-1)
         adj=defaultdict(list)
         for a,b,w in edges:
             adj[a].append((b,w))
             adj[b].append((a,w*2))
         visited=set()
         heap=[(0,0)]
+        dist=[0]+[inf]*(n-1)
         while heap:
             w,node=heapq.heappop(heap)
             if node in visited:
                 continue
             visited.add(node)
             for nei,nw in adj[node]:
-                if nei not in visited:
-                    heapq.heappush(heap,(w+nw,nei))
-                # if w > dist[node]:
-                #     continue   # ← this replaces visited
+                heapq.heappush(heap,(w+nw,nei))
                 if w+nw<dist[nei]:
-                    dist[nei] = w + nw
+                    dist[nei]=w+nw
         return dist[n - 1] if dist[n - 1] != inf else -1
+        
+
+
+
+
+
+
+
+
+        # dist=[0]+[inf]*(n-1)
+        # adj=defaultdict(list)
+        # for a,b,w in edges:
+        #     adj[a].append((b,w))
+        #     adj[b].append((a,w*2))
+        # visited=set()
+        # heap=[(0,0)]
+        # while heap:
+        #     w,node=heapq.heappop(heap)
+        #     if node in visited:
+        #         continue
+        #     visited.add(node)
+        #     for nei,nw in adj[node]:
+        #         if nei not in visited:
+        #             heapq.heappush(heap,(w+nw,nei))
+        #         # if w > dist[node]:
+        #         #     continue   # ← this replaces visited
+        #         if w+nw<dist[nei]:
+        #             dist[nei] = w + nw
+        # return dist[n - 1] if dist[n - 1] != inf else -1
 
 
         ###understand in context of dense graph why it is better to use  a set checker
