@@ -13,9 +13,9 @@ class Solution:
                 continue
             visited.add(node)
             for nei,nw in adj[node]:
+                heapq.heappush(heap,(w+nw,nei))
                 if w+nw<dist[nei]:
                     dist[nei]=w+nw
-                    heapq.heappush(heap,(w+nw,nei))
         return dist[n - 1] if dist[n - 1] != inf else -1
         
 
