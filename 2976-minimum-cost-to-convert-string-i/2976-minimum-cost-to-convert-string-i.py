@@ -1,45 +1,76 @@
 class Solution:
     def minimumCost(self, source: str, target: str, original: List[str], changed: List[str], cost: List[int]) -> int:
-        shortest_path = {}
-        adj = defaultdict(list)
-
-        for o, c, w in zip(original, changed, cost):
-            adj[o].append((c, w))
-
-        def dijkstra(start):
-            heap = [(0, start)]
-            min_cost_map = {}
-
+        adj=defaultdict(list)
+        for o,c,w in zip(original,changed,cost):
+            adj[o].append((c,w))
+        shortest_path_source={}
+        def disjktra(source):
+            dst={}
+            heap=[(0,source)]
             while heap:
-                curr_cost, node = heapq.heappop(heap)
-
-                if node in min_cost_map:
+                cost,node=heapq.heappop(heap)
+                if node in dst:
                     continue
-
-                min_cost_map[node] = curr_cost
-
-                for nei, w in adj[node]:
-                    heapq.heappush(heap, (curr_cost + w, nei))
-
-            return min_cost_map
-
-        res = 0
-
-        for s, t in zip(source, target):
-            if s == t:
+                dst[node]=cost
+                for nei,nc in adj[node]:
+                    heapq.heappush(heap,(nc+cost,nei))
+            return dst
+        res=0
+        for s,t in zip(source,target):
+            if s==t:
                 continue
-
-            if s not in shortest_path:
-                shortest_path[s] = dijkstra(s)
-
-            min_cost = shortest_path[s].get(t, float('inf'))
-
-            if min_cost == float('inf'):
+            if s not in shortest_path_source:
+                shortest_path_source[s]=disjktra(s)
+            if t  not in shortest_path_source[s]:
                 return -1
-
-            res += min_cost
-
+            res+=shortest_path_source[s][t]
         return res
+
+
+
+
+
+
+        # shortest_path = {}
+        # adj = defaultdict(list)
+
+        # for o, c, w in zip(original, changed, cost):
+        #     adj[o].append((c, w))
+
+        # def dijkstra(start):
+        #     heap = [(0, start)]
+        #     min_cost_map = {}
+
+        #     while heap:
+        #         curr_cost, node = heapq.heappop(heap)
+
+        #         if node in min_cost_map:
+        #             continue
+
+        #         min_cost_map[node] = curr_cost
+
+        #         for nei, w in adj[node]:
+        #             heapq.heappush(heap, (curr_cost + w, nei))
+
+        #     return min_cost_map
+
+        # res = 0
+
+        # for s, t in zip(source, target):
+        #     if s == t:
+        #         continue
+
+        #     if s not in shortest_path:
+        #         shortest_path[s] = dijkstra(s)
+
+        #     min_cost = shortest_path[s].get(t, float('inf'))
+
+        #     if min_cost == float('inf'):
+        #         return -1
+
+        #     res += min_cost
+
+        # return res
 # class Solution:
 #     def minimumCost(self, source: str, target: str, original: List[str], changed: List[str], cost: List[int]) -> int:
 #         shortest_path={}
