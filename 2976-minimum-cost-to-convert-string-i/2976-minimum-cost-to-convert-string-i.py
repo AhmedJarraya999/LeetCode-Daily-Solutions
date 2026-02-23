@@ -1,7 +1,7 @@
 class Solution:
     def minimumCost(self, source: str, target: str, original: List[str], changed: List[str], cost: List[int]) -> int:
+        cached_dijkstra={}
         adj=defaultdict(list)
-        cached_disjkstra={}
         for o,c,w in zip(original,changed,cost):
             adj[o].append((c,w))
         def dijkstra(source):
@@ -19,12 +19,12 @@ class Solution:
         for s,t in zip(source,target):
             if s==t:
                 continue
-            if s not in cached_disjkstra:
+            if s not in cached_dijkstra:
                 dis=dijkstra(s)
-                cached_disjkstra[s]=dis
-            if t not in cached_disjkstra[s]:
+                cached_dijkstra[s]=dis
+            if t not in cached_dijkstra[s]:
                 return -1
-            cost+=cached_disjkstra[s][t]
+            cost+=cached_dijkstra[s][t]
         return cost
 
         
