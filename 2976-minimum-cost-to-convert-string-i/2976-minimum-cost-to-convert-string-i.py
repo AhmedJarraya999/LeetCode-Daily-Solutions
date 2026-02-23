@@ -1,30 +1,71 @@
 class Solution:
     def minimumCost(self, source: str, target: str, original: List[str], changed: List[str], cost: List[int]) -> int:
+        cached_disjktra={}
         adj=defaultdict(list)
         for o,c,w in zip(original,changed,cost):
             adj[o].append((c,w))
-        shortest_path_source={}
         def disjktra(source):
-            dst={}
             heap=[(0,source)]
+            dist={}
             while heap:
                 cost,node=heapq.heappop(heap)
-                if node in dst:
+                if node in dist:
                     continue
-                dst[node]=cost
-                for nei,nc in adj[node]:
-                    heapq.heappush(heap,(nc+cost,nei))
-            return dst
-        res=0
+                dist[node]=cost
+                for nei,nw in adj[node]:
+                    heapq.heappush(heap,(nw+cost,nei))
+            return dist
+        cost=0
         for s,t in zip(source,target):
             if s==t:
                 continue
-            if s not in shortest_path_source:
-                shortest_path_source[s]=disjktra(s)
-            if t  not in shortest_path_source[s]:
+            if s not in cached_disjktra:
+                sp_f_s=disjktra(s)
+                cached_disjktra[s]=sp_f_s
+            if t not in cached_disjktra[s]:
                 return -1
-            res+=shortest_path_source[s][t]
-        return res
+            cost+=cached_disjktra[s][t]
+        return cost 
+            
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+        # adj=defaultdict(list)
+        # for o,c,w in zip(original,changed,cost):
+        #     adj[o].append((c,w))
+        # shortest_path_source={}
+        # def disjktra(source):
+        #     dst={}
+        #     heap=[(0,source)]
+        #     while heap:
+        #         cost,node=heapq.heappop(heap)
+        #         if node in dst:
+        #             continue
+        #         dst[node]=cost
+        #         for nei,nc in adj[node]:
+        #             heapq.heappush(heap,(nc+cost,nei))
+        #     return dst
+        # res=0
+        # for s,t in zip(source,target):
+        #     if s==t:
+        #         continue
+        #     if s not in shortest_path_source:
+        #         shortest_path_source[s]=disjktra(s)
+        #     if t  not in shortest_path_source[s]:
+        #         return -1
+        #     res+=shortest_path_source[s][t]
+        # return res
 
 
 
