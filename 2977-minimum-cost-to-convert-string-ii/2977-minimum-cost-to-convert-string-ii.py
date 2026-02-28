@@ -17,18 +17,17 @@ class Solution:
                     continue
                 dst[node]=cost
                 for nei,nw in adj[node]:
-                    heapq.heappush(heap,(nw+cost,nei))
+                    heapq.heappush(heap,(cost+nw,nei))
             return dst
-
         lengths=set(len(o) for o in original)
-        @cache
+        @cache 
         def dp(i):
             if i==len(source):
                 return 0
             if source[i]==target[i]:
                 res=dp(i+1)
             else:
-                res=inf 
+                res=inf
             for l in sorted(lengths):
                 if i+l>len(source):
                     break
@@ -39,14 +38,26 @@ class Solution:
                 dis=dijkstra(s)
                 if t not in dis:
                     continue
-                dis=dis[t]
-                res=min(res,dis+dp(i+l))
+                res=min(res,dis[t]+dp(i+l))
             return res
         res=dp(0)
         if res==inf:
             return -1
         else:
             return res
+                
+
+
+            
+            
+
+        
+        
+
+
+
+        
+        
         
 
         
