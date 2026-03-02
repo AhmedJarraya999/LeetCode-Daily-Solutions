@@ -10,4 +10,7 @@ class Solution:
             else:
                 right = mid - 1
         
-        return letters[left % n]  
+        if left==n:
+            return letters[0]
+        else:
+            return letters[left] 
