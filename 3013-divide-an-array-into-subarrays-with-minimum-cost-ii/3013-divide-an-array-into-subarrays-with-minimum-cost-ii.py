@@ -22,7 +22,7 @@ class Solution:
                     l=large.pop(0)
                     small.add(l)
                     curr+=l[0]
-            elif pkey in large:
+            if pkey in large:
                 large.discard(pkey)
             small.add(nkey)
             curr+=nkey[0]
