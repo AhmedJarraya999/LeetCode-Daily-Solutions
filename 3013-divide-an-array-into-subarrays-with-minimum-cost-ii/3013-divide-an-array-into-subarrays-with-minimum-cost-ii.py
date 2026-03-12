@@ -22,6 +22,8 @@ class Solution:
                     l=large.pop(0)
                     small.add(l)
                     curr+=l[0]
+            elif pkey in large:
+                large.discard(pkey)
             ###element d5aaal
             small.add(nkey)
             curr+=nkey[0]
