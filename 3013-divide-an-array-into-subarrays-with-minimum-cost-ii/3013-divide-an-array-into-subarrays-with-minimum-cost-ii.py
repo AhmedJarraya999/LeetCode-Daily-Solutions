@@ -15,6 +15,7 @@ class Solution:
         for i in range(dist+2,n):
             pkey=(nums[i-dist-1],i-dist-1)
             nkey=(nums[i],i)
+            ##remove left
             if pkey in small:
                 small.discard(pkey)
                 curr-=pkey[0]
@@ -24,10 +25,12 @@ class Solution:
                     curr+=l[0]
             elif pkey in large:
                 large.discard(pkey)
+            ##add right
             small.add(nkey)
             curr+=nkey[0]
             if len(small)>=k:
                 s=small.pop(-1)
+                large.add(s)
                 curr-=s[0]
             res=min(res,curr)
         return nums[0]+res
