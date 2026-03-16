@@ -19,9 +19,10 @@ class Solution:
                 else:
                     return False
             else:
-                if nums[i]<=nums[i-1]:
+                if nums[i]>nums[i-1]:
+                    continue
+                elif nums[i]<=nums[i-1]:
                     return False
         return state==2
-
-
+ 
         
