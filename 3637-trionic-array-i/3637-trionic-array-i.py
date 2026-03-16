@@ -22,5 +22,6 @@ class Solution:
                 if nums[i]<=nums[i-1]:
                     return False
         return state==2
-            
+
+
         
