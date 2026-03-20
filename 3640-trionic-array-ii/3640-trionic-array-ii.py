@@ -1,43 +1,89 @@
 class Solution:
     def maxSumTrionic(self, nums: List[int]) -> int:
-        n = len(nums)
-        i = 0
-        ans = -inf
-        while i < n:
-            l = i
-            i += 1
-            while i < n and nums[i - 1] < nums[i]:
-                i += 1
-            if i == l + 1:
+        #o(n)
+        n=len(nums)
+        res= -inf
+        i=0
+        while i<n:
+            #find shortest first segment
+            j=i+1
+            while j<n and nums[j]>nums[j-1]:
+                j+=1
+            p=j-1
+            if p==i: ##length of cur segment is 0
+                i+=1
                 continue
-
-            p = i - 1
-            s = nums[p - 1] + nums[p]
-            while i < n and nums[i - 1] > nums[i]:
-                s += nums[i]
-                i += 1
-            if i == p + 1 or i == n or nums[i - 1] == nums[i]:
+            curr=nums[p]+nums[p-1]
+            ##full second segment 
+            while j<n and nums[j]<nums[j-1]:
+                curr+=nums[j]
+                j+=1
+            q=j-1
+            if p==q or q==n-1 or (q<n and nums[q]==nums[j]):
+                i=q
                 continue
+            ##third segment with max sum
+            curr+=nums[j]
+            j+=1
+            acc=0
+            mx=0
+            while j<n and nums[j]>nums[j-1]:
+                acc+=nums[j]
+                mx=max(mx,acc)
+                j+=1
+            curr+=mx
+            ##maximise sum of first segment
+            acc=0
+            mx=0
+            jj=p-2
+            while jj>=0 and nums[jj]<nums[jj+1]:
+                acc+=nums[jj]
+                mx=max(mx,acc)
+                jj-=1
+            curr+=mx
+            res=max(res,curr)
+            i=q ##next possible trionic array starting with last segment 
+        return res
+            
 
-            q = i - 1
-            s += nums[i]
-            i += 1
-            mx = t = 0
-            while i < n and nums[i - 1] < nums[i]:
-                t += nums[i]
-                i += 1
-                mx = max(mx, t)
-            s += mx
+        # n = len(nums)
+        # i = 0
+        # ans = -inf
+        # while i < n:
+        #     l = i
+        #     i += 1
+        #     while i < n and nums[i - 1] < nums[i]:
+        #         i += 1
+        #     if i == l + 1:
+        #         continue
 
-            mx = t = 0
-            for j in range(p - 2, l - 1, -1):
-                t += nums[j]
-                mx = max(mx, t)
-            s += mx
+        #     p = i - 1
+        #     s = nums[p - 1] + nums[p]
+        #     while i < n and nums[i - 1] > nums[i]:
+        #         s += nums[i]
+        #         i += 1
+        #     if i == p + 1 or i == n or nums[i - 1] == nums[i]:
+        #         continue
 
-            ans = max(ans, s)
-            i = q
-        return ans
+        #     q = i - 1
+        #     s += nums[i]
+        #     i += 1
+        #     mx = t = 0
+        #     while i < n and nums[i - 1] < nums[i]:
+        #         t += nums[i]
+        #         i += 1
+        #         mx = max(mx, t)
+        #     s += mx
+
+        #     mx = t = 0
+        #     for j in range(p - 2, l - 1, -1):
+        #         t += nums[j]
+        #         mx = max(mx, t)
+        #     s += mx
+
+        #     ans = max(ans, s)
+        #     i = q
+        # return ans
 # class Solution:
 #     def maxSumTrionic(self, nums):
 #         n = len(nums)
