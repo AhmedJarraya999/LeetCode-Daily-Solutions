@@ -1,7 +1,5 @@
 class Solution:
-    def maxSumTrionic(self, nums: List[int]) -> int:
-        #o(n)
-      
+    def maxSumTrionic(self, nums: List[int]) -> int:  
         n=len(nums)
         res= -inf
         i=0
