@@ -1,40 +1,45 @@
+from typing import List
+
 class Solution:
     def maxSumTrionic(self, nums: List[int]) -> int:
         n = len(nums)
-        i = 0
-        ans = -inf
-        while i < n:
-            l = i
-            i += 1
-            while i < n and nums[i - 1] < nums[i]:
+        
+        pref = [0] * n
+        suff = [0] * n
+        
+        # pref: max increasing subarray sum ending at i
+        pref[0] = nums[0]
+        for i in range(1, n):
+            if nums[i] > nums[i - 1]:
+                pref[i] = max(pref[i - 1] + nums[i], nums[i])
+            else:
+                pref[i] = nums[i]
+        
+        # suff: max increasing subarray sum starting at i
+        suff[n - 1] = nums[n - 1]
+        for i in range(n - 2, -1, -1):
+            if nums[i] < nums[i + 1]:
+                suff[i] = max(suff[i + 1] + nums[i], nums[i])
+            else:
+                suff[i] = nums[i]
+        
+        res = float('-inf')
+        i = 2
+        
+        while i < n - 1:
+            if nums[i] < nums[i - 1]:
+                temp = nums[i - 1]
+                x = i - 2
+                
+                # decreasing segment
+                while i < n - 1 and nums[i] < nums[i - 1]:
+                    temp += nums[i]
+                    i += 1
+                
+                # check valid trionic shape
+                if nums[i] > nums[i - 1] and nums[x] < nums[x + 1]:
+                    res = max(res, temp + pref[x] + suff[i])
+            else:
                 i += 1
-            if i == l + 1:
-                continue
-
-            p = i - 1
-            s = nums[p - 1] + nums[p]
-            while i < n and nums[i - 1] > nums[i]:
-                s += nums[i]
-                i += 1
-            if i == p + 1 or i == n or nums[i - 1] == nums[i]:
-                continue
-
-            q = i - 1
-            s += nums[i]
-            i += 1
-            mx = t = 0
-            while i < n and nums[i - 1] < nums[i]:
-                t += nums[i]
-                i += 1
-                mx = max(mx, t)
-            s += mx
-
-            mx = t = 0
-            for j in range(p - 2, l - 1, -1):
-                t += nums[j]
-                mx = max(mx, t)
-            s += mx
-
-            ans = max(ans, s)
-            i = q
-        return ans
+        
+        return res
