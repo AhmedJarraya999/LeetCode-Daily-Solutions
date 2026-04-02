@@ -1,24 +1,26 @@
 class Solution:
     def maxSumTrionic(self, nums: List[int]) -> int: 
-        res=float('-inf')
         i=0
+        res=float('-inf')
         while i<len(nums):
             j=i+1
+            ##first segmentsum
             while j<len(nums) and nums[j]>nums[j-1]:
                 j+=1
             p=j-1
             if p==i:
                 i+=1
                 continue
-            curr=nums[p]+nums[p-1]
+            cur=nums[p]+nums[p-1]
+            ## second segment sum
             while j<len(nums) and nums[j]<nums[j-1]:
-                curr+=nums[j]
+                cur+=nums[j]
                 j+=1
             q=j-1
-            if p==q or q==len(nums)-1 or (q<len(nums) and nums[q]==nums[j]):
+            if p==q or q==len(nums)-1 or nums[q]==nums[j]:
                 i=q
                 continue
-            curr+=nums[j]
+            cur+=nums[j]
             j+=1
             cum=0
             mx=0
@@ -26,23 +28,28 @@ class Solution:
                 cum+=nums[j]
                 mx=max(mx,cum)
                 j+=1
-            curr+=mx
+            cur+=mx
             jj=p-2
-            cum=0
+            acc=0
             mx=0
             while jj>=0 and nums[jj]<nums[jj+1]:
-                cum+=nums[jj]
-                mx=max(cum,mx)
+                acc+=nums[jj]
+                mx=max(acc,mx)
                 jj-=1
-            curr+=mx
-            res=max(res,curr)
+            cur+=mx
+            res=max(res,cur)
             i=q
         return res
+
+
             
 
+        
+                
 
-
-            
+                
+        
+        
             
 
 
