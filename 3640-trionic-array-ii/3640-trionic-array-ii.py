@@ -1,45 +1,35 @@
+# 
 from typing import List
 
 class Solution:
     def maxSumTrionic(self, nums: List[int]) -> int:
         n = len(nums)
-        
-        pref = [0] * n
-        suff = [0] * n
-        
-        # pref: max increasing subarray sum ending at i
-        pref[0] = nums[0]
+        NEG = -10**18  # equivalent to Long.MIN_VALUE / 4
+
+        inc1 = [NEG] * n
+        dec = [NEG] * n
+        inc2 = [NEG] * n
+
         for i in range(1, n):
+            # First increasing phase
             if nums[i] > nums[i - 1]:
-                pref[i] = max(pref[i - 1] + nums[i], nums[i])
-            else:
-                pref[i] = nums[i]
-        
-        # suff: max increasing subarray sum starting at i
-        suff[n - 1] = nums[n - 1]
-        for i in range(n - 2, -1, -1):
-            if nums[i] < nums[i + 1]:
-                suff[i] = max(suff[i + 1] + nums[i], nums[i])
-            else:
-                suff[i] = nums[i]
-        
-        res = float('-inf')
-        i = 2
-        
-        while i < n - 1:
+                inc1[i] = max(
+                    inc1[i - 1] + nums[i],
+                    nums[i - 1] + nums[i]
+                )
+
+            # Decreasing phase
             if nums[i] < nums[i - 1]:
-                temp = nums[i - 1]
-                x = i - 2
-                
-                # decreasing segment
-                while i < n - 1 and nums[i] < nums[i - 1]:
-                    temp += nums[i]
-                    i += 1
-                
-                # check valid trionic shape
-                if nums[i] > nums[i - 1] and nums[x] < nums[x + 1]:
-                    res = max(res, temp + pref[x] + suff[i])
-            else:
-                i += 1
-        
-        return res
+                dec[i] = max(
+                    inc1[i - 1] + nums[i],
+                    dec[i - 1] + nums[i]
+                )
+
+            # Second increasing phase
+            if nums[i] > nums[i - 1]:
+                inc2[i] = max(
+                    dec[i - 1] + nums[i],
+                    inc2[i - 1] + nums[i]
+                )
+
+        return max(inc2)
