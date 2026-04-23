@@ -7,10 +7,11 @@ class Solution:
                 result[i]=nums[index]
             if nums[i]<0:
                 index=(i-abs(nums[i]))%len(nums)
-                #index = (i + nums[i]) % len(nums)
                 result[i]=nums[index]
             if nums[i]==0:
                 result[i]=nums[i]
-        return result
-        
+        return result 
+            
+
+
         
