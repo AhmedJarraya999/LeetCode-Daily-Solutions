@@ -1,33 +1,23 @@
 class Solution:
-    def minRemoval(self, nums: List[int], k: int) -> int:
-        def binarysearch(target):
-            left,right=0,len(nums)
-            while left<right:
-                mid=(left+right)//2
-                if nums[mid]<=target:
-                    left=mid+1
-                else:
-                    right=mid
-            return left
+    def minRemoval(self, nums: List[int], k: int) -> int: 
         nums.sort()
         n=len(nums)
-        window_size=0
+        window=0
+        #
+        def binarysearch(target):
+            left=0
+            right=len(nums)
+            while left<right:
+                mid=(left+right)//2
+                if nums[mid]>target:
+                    right=mid
+                else:
+                    left=mid+1
+            return left
+
         for i in range(n):
-            # find first index where value > k * nums[i]
-            # j=bisect_right(nums,k*nums[i])
-            j=binarysearch(k*nums[i])
-            ##window is [i,j-1]
-            window_size=max(window_size,j-i)
-        return n- window_size
-        # nums.sort()
-        # n=len(nums)
-        # left=0
-        # right=0
-        # window_size=0
-        # for right in range(n):
-        #     while nums[right]>k*nums[left]:
-        #         left+=1
-        #     window_size=max(window_size,right-left+1)
-        # return n-window_size
-            
+            j=binarysearch(nums[i]*k)
+            window=max(window,j-i)
+        return n-window
+
         
