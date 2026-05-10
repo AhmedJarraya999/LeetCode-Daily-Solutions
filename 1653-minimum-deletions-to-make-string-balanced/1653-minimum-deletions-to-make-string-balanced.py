@@ -1,12 +1,13 @@
 class Solution:
     def minimumDeletions(self, s: str) -> int:
-        b_count = 0
-        deletions = 0
+        b_count = 0   # number of 'b' seen so far
+        res = 0       # minimum deletions
 
-        for ch in s:
-            if ch == 'b':
+        for c in s:
+            if c == 'b':
                 b_count += 1
-            else:  # ch == 'a'
-                deletions = min(deletions + 1, b_count)
+            else:  # c == 'a'
+                # either delete this 'a', or delete all previous 'b'
+                res = min(res + 1, b_count)
 
-        return deletions
+        return res
