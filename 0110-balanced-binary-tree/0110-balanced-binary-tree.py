@@ -1,5 +1,7 @@
 class Solution:
     def isBalanced(self, root: Optional[TreeNode]) -> bool:
+        ###at each node the absolute difference btwen hight and right subtree is lower than 1
+        ###the  height is calculated recusrevly if not node return 0 else the height is the max between left and right 
         def height(node):
             if not node:
                 return 0
