@@ -19,10 +19,10 @@ class Solution:
             if left>right:
                 return None
             mid=(left+right)//2
-            node=TreeNode(arr[mid])
-            node.left=build(left,mid-1)
-            node.right=build(mid+1,right)
-            return node
+            root=TreeNode(arr[mid])
+            root.left=build(left,mid-1)
+            root.right=build(mid+1,right)
+            return root
         return build(0,len(arr)-1)
         # # Step 1: Inorder traversal to get sorted values
         # def inorder(node):
