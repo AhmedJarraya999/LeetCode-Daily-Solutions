@@ -5,9 +5,9 @@ class Solution:
             evenset=set()
             oddset=set()
             for j in range(i,len(nums)):
-                if nums[j]%2==0 and nums[j] not in evenset:
+                if nums[j]%2==0:
                     evenset.add(nums[j])
-                if nums[j]%2==1 and nums[j] not in oddset:
+                if nums[j]%2==1:
                     oddset.add(nums[j])
                 if len(oddset)==len(evenset):
                     ans=max(ans,j-i+1)
