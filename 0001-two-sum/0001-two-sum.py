@@ -1,23 +1,70 @@
 class Solution:
     def twoSum(self, nums: list[int], target: int) -> list[int]:
-        # res=[]
         # for i in range(len(nums)):
         #     for j in range(i+1,len(nums)):
         #         if nums[i]+nums[j]==target:
-        #             res.append([i,j])
-        # return res
+        #             return [i,j]       
         arr=sorted((num,i) for i,num in enumerate(nums))
         for i in range(len(nums)):
             left=i+1
             right=len(nums)-1
             while left<=right:
                 mid=(left+right)//2
-                if arr[mid][0]+arr[i][0]>target:
-                    right=mid-1
-                elif arr[i][0]+arr[mid][0]<target:
+                if arr[i][0]+arr[mid][0]<target:
                     left=mid+1
+                elif arr[i][0]+arr[mid][0]>target:
+                    right=mid-1
                 else:
-                    return [arr[i][1],arr[mid][1]]
+                    return[arr[i][1],arr[mid][1]]
+
+
+                 
+
+
+
+
+
+
+
+
+
+
+
+
+        # res=[]
+        # for i in range(len(nums)):
+        #     for j in range(i+1,len(nums)):
+        #         if nums[i]+nums[j]==target:
+        #             res.append([i,j])
+        # return res
+
+
+
+
+        # seen = {}
+
+        # for i, num in enumerate(nums):
+        #     complement = target - num
+
+        #     if complement in seen:
+        #         return [seen[complement], i]
+
+        #     seen[num] = i
+            
+
+
+        # arr=sorted((num,i) for i,num in enumerate(nums))
+        # for i in range(len(nums)):
+        #     left=i+1
+        #     right=len(nums)-1
+        #     while left<=right:
+        #         mid=(left+right)//2
+        #         if arr[mid][0]+arr[i][0]>target:
+        #             right=mid-1
+        #         elif arr[i][0]+arr[mid][0]<target:
+        #             left=mid+1
+        #         else:
+        #             return [arr[i][1],arr[mid][1]]
 
 
 
